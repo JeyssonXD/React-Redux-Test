@@ -1,0 +1,34 @@
+/*custom style*/
+
+/***typographic***/
+@import url('https://fonts.googleapis.com/css?family=EB+Garamond&display=swap');
+
+.title-home{
+    color: black!important;
+    font-size: 150%!important;
+    font-weight: bold;
+    font-family: 'EB Garamond', serif!important;
+}
+
+/**utilitys***/
+.box-title{
+    padding: 5px;
+    border-style: solid 1px;
+}
+
+/*colors*/
+.color-black{
+    color: black;
+}
+.color-white{
+    color: white!important;
+}
+
+/*background-color*/
+.color-back-grey-low{
+    background-color: #eeeeee;
+}
+
+.color-back-white{
+    background-color: white;
+}

@@ -1,6 +1,5 @@
 const defaultUserInfo = {
-  name: 'Demo User',
-  image: 'http://demos.creative-tim.com/light-bootstrap-dashboard-pro/assets/img/default-avatar.png'
+  name: 'Demo User'
 };
 
 export default function reducer(state = {

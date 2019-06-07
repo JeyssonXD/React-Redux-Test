@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import {NavLink} from 'react-router-dom';
 import { toggleMobileNavVisibility } from '../../reducers/Layout';
 import { Navbar, Nav, NavItem, NavDropdown, MenuItem, FormGroup, FormControl } from 'react-bootstrap';
 
@@ -20,32 +21,23 @@ const Header = ({
       <Navbar.Collapse>
 
         <Nav>
-          <NavItem><i className="fa fa-dashboard"></i></NavItem>
-          <NavDropdown title={<i className="fa fa-globe" />} id="basic-nav-dropdown">
-            <MenuItem>Action</MenuItem>
-            <MenuItem>Another action</MenuItem>
-            <MenuItem>Something else here</MenuItem>
-            <MenuItem divider />
-            <MenuItem>Separated link</MenuItem>
+          <NavItem ><NavLink to="/"><i className="fa fa-home"></i>Home</NavLink></NavItem>
+          <NavDropdown title={<i className="fa fa-file-download" />} id="basic-nav-dropdown">
+            <MenuItem>Export at Excel</MenuItem>
           </NavDropdown>
         </Nav>
         <div className="separator"></div>
         <Navbar.Form pullLeft>
           <FormGroup>
             <span className="input-group-addon"><i className="fa fa-search"></i></span>
-            <FormControl type="text" placeholder="Type to search" />
+            <FormControl type="text" placeholder="search person for id" />
           </FormGroup>
         </Navbar.Form>
         <Nav pullRight>
-          <NavItem>Account</NavItem>
-          <NavDropdown title="Dropdown" id="right-nav-bar">
-            <MenuItem>Action</MenuItem>
-            <MenuItem>Another action</MenuItem>
-            <MenuItem>Something else here</MenuItem>
-            <MenuItem divider />
-            <MenuItem>Separated link</MenuItem>
-          </NavDropdown>
-          <NavItem>Log out</NavItem>
+          <NavItem>
+            <i className="pe-7s-next-2"></i>
+            Log out
+          </NavItem>
         </Nav>
       </Navbar.Collapse>
     </Navbar>

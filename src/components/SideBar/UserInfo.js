@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import imagen from '../../assets/images/man.png'
 
 class UserInfo extends Component {
 
@@ -13,7 +14,7 @@ class UserInfo extends Component {
     return (
       <div className="user-wrapper">
         <div className="user">
-          <img src={user.image} alt={user.name} className="photo" />
+          <img src={imagen} alt={user.name} className="photo" />
           <div className="userinfo">
             <div className="username">
               {user.name}
