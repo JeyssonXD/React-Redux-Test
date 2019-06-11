@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import {NavLink} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { toggleMobileNavVisibility } from '../../reducers/Layout';
 import { Navbar, Nav, NavItem, NavDropdown, MenuItem, FormGroup, FormControl } from 'react-bootstrap';
 
@@ -21,7 +21,7 @@ const Header = ({
       <Navbar.Collapse>
 
         <Nav>
-          <NavItem ><NavLink to="/"><i className="fa fa-home"></i>Home</NavLink></NavItem>
+          <NavItem componentClass={Link} href="/" to="/"><i className="fa fa-home"></i>Home</NavItem>
           <NavDropdown title={<i className="fa fa-file-download" />} id="basic-nav-dropdown">
             <MenuItem>Export at Excel</MenuItem>
           </NavDropdown>

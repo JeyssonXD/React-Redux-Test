@@ -11,6 +11,7 @@ import SideBar from '../../components/SideBar';
  * Pages
  */
 import Dashboard from '../Dashboard';
+import Person from '../Person';
 
 const Main = ({
   mobileNavVisibility,
@@ -35,6 +36,7 @@ const Main = ({
         <div className="main-panel">
           <Header />
           <Route exact path="/" component={Dashboard} />
+          <Route exact path="/person/index" component={Person} />
           <Footer />
         </div>
       </div>
