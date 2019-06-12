@@ -7,26 +7,27 @@ import 'sweetalert/dist/sweetalert.css';
 import Main from './pages/Main';
 import configureStore from './config/configureStore';
 import { Provider } from 'react-redux';
-//import {ApolloProvider} from 'react-apollo';
-//import ApolloClient from 'apollo-boost';
-
-//api get tokens
+//api config
 import api from './api/ApiTestGraphql';
-api.oAuth.sign({credentials:{email:"jeyssonelrobinshut@gmail.com",password:"1234"}}).then((data)=>{
-  console.log(data);
-});
+import valid from './api/ApiTestGraphql/helper/validate';
+import config from './api/ApiTestGraphql/helper/config';
+
+
+//api graphql tokens
+api.oAuth.sign({credentials:{email:config.developer.UserName,password:config.developer.Password}}).then((data)=>{ 
+  var pettry = valid.validateMutation(data,'oAuth','access');
+  if(pettry.code==='CODE3000' && pettry.data.active){
+      localStorage.ApiTestGraphql=pettry.data.token;
+  }else{
+    alert("not authenticated api");
+  }
+}).catch((error)=>{console.log(error)});
 
 
 //store
 const store = configureStore();
 //tag html
 const rootElement = document.getElementById('root');
-
-// Pass your GraphQL endpoint to uri
-//const client = new ApolloClient({ uri: 'http://localhost:4000/' });
-
-//oAuth api test graphql
-
 
 const renderApp = Component => {
   ReactDOM.render(

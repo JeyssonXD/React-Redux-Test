@@ -1,9 +1,11 @@
 import ApolloClient from 'apollo-boost';
 //definition
 import schema from './Authorization';
+//config
+import config  from './helper/config';
 
 //client as oAuth
-const clientAllows = new ApolloClient({ uri: "http://localhost:4000/" });
+const clientAllows = new ApolloClient({ uri: config.developer.URL });
 
 //client with token
 
