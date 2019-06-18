@@ -3,7 +3,7 @@
 export default {
     developer:{
         URL: "http://localhost:4000/",
-        UserName: "jeyssonelrobinshut@gmail.com",
+        UserName: "apptest@test.com",
         Password: "1234"
     },
     production:{

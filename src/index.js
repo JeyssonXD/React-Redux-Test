@@ -11,17 +11,33 @@ import { Provider } from 'react-redux';
 import api from './api/ApiTestGraphql';
 import valid from './api/ApiTestGraphql/helper/validate';
 import config from './api/ApiTestGraphql/helper/config';
+//config apollo client and provider
+import  ApolloClient  from 'apollo-boost';
+import  {ApolloProvider}  from 'react-apollo';
 
 
 //api graphql tokens
 api.oAuth.sign({credentials:{email:config.developer.UserName,password:config.developer.Password}}).then((data)=>{ 
   var pettry = valid.validateMutation(data,'oAuth','access');
+  //CODE3000 token fine
   if(pettry.code==='CODE3000' && pettry.data.active){
       localStorage.ApiTestGraphql=pettry.data.token;
   }else{
     alert("not authenticated api");
   }
 }).catch((error)=>{console.log(error)});
+
+//config apollo client authorizatio
+const client = new ApolloClient({
+  uri: config.developer.URL,
+  request: operation => {
+    operation.setContext({
+      headers: {
+        authorization: localStorage.getItem('ApiTestGraphql')
+      }
+    });
+   }
+});
 
 
 //store
@@ -31,13 +47,13 @@ const rootElement = document.getElementById('root');
 
 const renderApp = Component => {
   ReactDOM.render(
-    //<ApolloProvider client={client}>
+    <ApolloProvider client={client}>
       <Provider store={store}>
         <HashRouter>
           <Component />
         </HashRouter>
-      </Provider>,
-    //</ApolloProvider>,
+      </Provider>
+    </ApolloProvider>,
     rootElement
   );
 };
