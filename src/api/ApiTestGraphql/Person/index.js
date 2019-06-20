@@ -11,6 +11,7 @@ export default {
                     id
                     name
                     age
+                    active
                 }
             }`;
         }

@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import registerServiceWorker from './registerServiceWorker';
-import { HashRouter } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import './assets/styles/base.scss';
 import 'sweetalert/dist/sweetalert.css';
 import Main from './pages/Main';
@@ -24,6 +24,8 @@ api.oAuth.sign({credentials:{email:config.developer.UserName,password:config.dev
       localStorage.ApiTestGraphql=pettry.data.token;
   }else{
     alert("not authenticated api");
+    localStorage.removeItem("ApiTestGraphql");
+
   }
 }).catch((error)=>{console.log(error)});
 
@@ -36,7 +38,26 @@ const client = new ApolloClient({
         authorization: localStorage.getItem('ApiTestGraphql')
       }
     });
-   }
+   },
+   onError: ({ networkError, graphQLErrors }) => { 
+    if(graphQLErrors){
+      for (let err of graphQLErrors) {
+        switch(err.extensions.code){
+          case 'UNAUTHENTICATED':
+            //reload tokens
+          break;
+          case 'GRAPHQL_VALIDATION_FAILED':
+            //query or mutation invalid  
+          break;
+          default:
+            //GRAPHQL_VALIDATION_FAILED
+          break;
+        }
+      }
+     }
+    console.log('graphQLErrors', graphQLErrors)
+    console.log('networkError', networkError)
+  }
 });
 
 
@@ -49,9 +70,9 @@ const renderApp = Component => {
   ReactDOM.render(
     <ApolloProvider client={client}>
       <Provider store={store}>
-        <HashRouter>
+        <BrowserRouter>
           <Component />
-        </HashRouter>
+        </BrowserRouter>
       </Provider>
     </ApolloProvider>,
     rootElement

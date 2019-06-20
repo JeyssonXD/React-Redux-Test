@@ -3,6 +3,7 @@ import { Route,withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import cx from 'classnames';
 import { setMobileNavVisibility } from '../../reducers/Layout';
+import PropTypes from 'prop-types';
 
 import Header from './Header';
 import Footer from './Footer';
@@ -16,7 +17,8 @@ import Person from '../Person';
 const Main = ({
   mobileNavVisibility,
   hideMobileMenu,
-  history
+  history,
+  location
 }) => {
 
   history.listen(() => {
@@ -35,8 +37,8 @@ const Main = ({
 
         <div className="main-panel">
           <Header />
-          <Route exact path="/" component={Dashboard} />
-          <Route exact path="/person/index" component={Person} />
+          <Route location={location} exact path="/" component={Dashboard} />
+          <Route location={location} exact path="/person/index" component={Person} />
           <Footer />
         </div>
       </div>
@@ -51,5 +53,11 @@ const mapStateToProp = state => ({
 const mapDispatchToProps = (dispatch, ownProps) => ({
   hideMobileMenu: () => dispatch(setMobileNavVisibility(false))
 });
+
+Main.propTypes = {
+  location : PropTypes.shape({
+    pathname : PropTypes.string.isRequired
+  })
+}
 
 export default withRouter(connect(mapStateToProp, mapDispatchToProps)(Main));

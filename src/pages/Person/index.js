@@ -1,28 +1,50 @@
 import React,{Component} from 'react';
 import {connect} from 'react-redux';
-//import PropTyes from 'prop-types';
 import { Query } from 'react-apollo';
+import {} from 'react-router-dom';
+//style
+import "../../assets/styles/style.css";
+//schema
 import schemaPerson from '../../api/ApiTestGraphql/Person';
+//web components
+import { ListGroup,ListGroupItem,Button,Alert } from 'react-bootstrap';
+import Profile from '../../components/person/profile';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faSpinner } from '@fortawesome/free-solid-svg-icons'
 
 class PersonPage extends Component{
 
     render(){
         return(
             <div>
-                List of persons
+                <div className="content">
+                <div className="container-fluid">
+                <div className="col-md-12">
+                <h2>Persons <Button bsStyle="primary">New</Button></h2>
                 <Query query={schemaPerson.query.persons()}>
-                    {({ loading, error, data }) => {
-                        if (loading) return <div>Loading...</div>;
-                        if (error) return <div>Error :(</div>;
+                    {({ error,data,loading }) => {
+
+                        if (loading){ return <div ><FontAwesomeIcon className="layer-center" icon={faSpinner} spin size="6x" /></div>}
+
+                        if (error){ return <div><Alert bsStyle="danger"><strong>went wrong sorry!</strong> can promblems network configuration, contact with administrator</Alert></div> }
 
                         return (
-                            <div>{data.people[0].name}</div> 
+                            <ListGroup>
+                            { data.people.map((person)=>{
+                                return <ListGroupItem key={person.id}><Profile person={person} /></ListGroupItem>
+                            })}
+                            </ListGroup>
                         )
                     }}
                 </Query>
+                </div>
+                </div>
+                </div>
             </div>
             );
     }
+
 }
+
 
 export default connect(null,{})(PersonPage);

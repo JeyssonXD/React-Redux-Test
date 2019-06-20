@@ -19,15 +19,16 @@ class SideBar extends Component {
 
     return (
       <div className="sidebar" data-color={backgroundColor} data-image={backgroundImage}>
-        <div className="brand">
-          <section className="box-title">
-          <h3 className="brand-name title-home" >
+        <div className="brand color-back-blue">
+          <section className="box-title" >
+          <h3 className="brand-name title-home color-white" >
             <u>
             APP-Test
             </u>
           </h3>
           </section>
         </div>
+        <div className="line"></div>
         <div className="sidebar-wrapper">
           <UserInfo />
           <div className="line"></div>

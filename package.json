@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "web application react",
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.19",
+    "@fortawesome/free-solid-svg-icons": "^5.9.0",
+    "@fortawesome/react-fontawesome": "^0.1.4",
     "animate.css": "^3.5.2",
     "apollo-boost": "^0.4.2",
     "apollo-client": "^2.6.2",
