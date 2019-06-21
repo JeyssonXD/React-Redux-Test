@@ -55,8 +55,8 @@ const client = new ApolloClient({
         }
       }
      }
-    console.log('graphQLErrors', graphQLErrors)
-    console.log('networkError', networkError)
+    //console.log('graphQLErrors', graphQLErrors)
+    //console.log('networkError', networkError)
   }
 });
 

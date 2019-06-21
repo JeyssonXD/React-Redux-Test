@@ -31,8 +31,8 @@ class Nav extends Component {
           <Collapse in={this.state.componentMenuOpen}>
             <div>
               <ul className="nav">
-                <li className={this.isPathActive('/person/add') ? 'active' : null}>
-                  <Link to="/person/add">• add new person</Link>
+                <li className={this.isPathActive('/person/new') ? 'active' : null}>
+                  <Link to="/person/new">• add new person</Link>
                 </li>
                 <li className={this.isPathActive('/person/index') ? 'active' : null}>
                   <Link to="/person/index">• list of person</Link>

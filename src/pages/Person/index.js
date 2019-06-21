@@ -1,13 +1,13 @@
 import React,{Component} from 'react';
 import {connect} from 'react-redux';
 import { Query } from 'react-apollo';
-import {} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 //style
 import "../../assets/styles/style.css";
 //schema
 import schemaPerson from '../../api/ApiTestGraphql/Person';
 //web components
-import { ListGroup,ListGroupItem,Button,Alert } from 'react-bootstrap';
+import { ListGroup,ListGroupItem,Alert } from 'react-bootstrap';
 import Profile from '../../components/person/profile';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSpinner } from '@fortawesome/free-solid-svg-icons'
@@ -20,7 +20,7 @@ class PersonPage extends Component{
                 <div className="content">
                 <div className="container-fluid">
                 <div className="col-md-12">
-                <h2>Persons <Button bsStyle="primary">New</Button></h2>
+                <h2>Persons <Link className="btn primary" to="/person/new">new</Link></h2>
                 <Query query={schemaPerson.query.persons()}>
                     {({ error,data,loading }) => {
 
@@ -31,7 +31,7 @@ class PersonPage extends Component{
                         return (
                             <ListGroup>
                             { data.people.map((person)=>{
-                                return <ListGroupItem key={person.id}><Profile person={person} /></ListGroupItem>
+                                return <ListGroupItem key={person.id}><Profile person={person}  /></ListGroupItem>
                             })}
                             </ListGroup>
                         )

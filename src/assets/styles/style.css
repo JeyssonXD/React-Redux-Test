@@ -21,6 +21,10 @@
 	display: block;
 }
 
+.box-container{
+  padding: 10px;
+}
+
 /*colors*/
 .color-black{
     color: black;
@@ -40,5 +44,10 @@
 
 .color-back-blue{
     background-color: #6D71EF!important;
+}
+
+.primary{
+    color: #6D71EF!important;
+    border-color: #6D71EF!important;
 }
 
