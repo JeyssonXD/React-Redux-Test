@@ -1,5 +1,28 @@
-export default function persons(state={}, action={}){
+import {ADD_PERSON,SET_PERSON,FETCH_PERSON} from '../types/personType';
+
+export default function reducer(state=[], action={}){
     switch(action.type){
-        default: return state;
+        case SET_PERSON:
+            return action.persons;
+        case FETCH_PERSON:
+            const index = state.findIndex(x=>x.id===action.person.id);
+            if(index>-1){
+                return state.map(x=>{
+                    if(x.id===action.person.id) return action.person;
+                    return x;
+                });
+            }else{
+                return [
+                ...state,
+                action.person
+                ]
+            }
+        case ADD_PERSON:
+            return [
+              ...state,
+              action.person
+            ];
+        default: 
+            return state;
     }
 }

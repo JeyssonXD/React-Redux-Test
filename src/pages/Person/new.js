@@ -6,11 +6,12 @@ import NewForm from './newForm';
 class PersonNew extends Component{
 
   //save new person
-  saveChange = async({name,age,active})  =>{
+  saveChange = async(name,age,active)  =>{
     try{
-      return await this.props.actionAddPerson({name,age,active});
+      age = Number(age);
+      return await this.props.actionAddPerson({person:{name,age,active}});
     }catch(error){
-      console.log(error);
+      throw error;
     }
   }
 
@@ -22,14 +23,13 @@ class PersonNew extends Component{
           </div>
           <div className="col-md-8">
             <div className="card">
-              <NewForm addPerson = {this.actionAddPerson} />
+              <NewForm addPerson ={this.saveChange}/>
             </div>
           </div>
         </div>
       </div>
     );
   }
-
 }
 
 export default connect(null,{actionAddPerson})(PersonNew)

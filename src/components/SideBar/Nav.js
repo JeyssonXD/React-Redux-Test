@@ -34,8 +34,8 @@ class Nav extends Component {
                 <li className={this.isPathActive('/person/new') ? 'active' : null}>
                   <Link to="/person/new">• add new person</Link>
                 </li>
-                <li className={this.isPathActive('/person/index') ? 'active' : null}>
-                  <Link to="/person/index">• list of person</Link>
+                <li className={this.isPathActive('/person') ? 'active' : null}>
+                  <Link to="/person">• list of person</Link>
                 </li>
               </ul>
             </div>

@@ -3,11 +3,12 @@ import gql from 'graphql-tag';
 export default {
     mutation:{
        createPerson: ()=>{
-            return gql`mutation createdPerson($person: person){
+            return gql`mutation createPerson($person: newPerson!){
                 createPerson(person:$person){
                     code
                     message
-                    success{
+                    success
+                    person{
                         id
                         name
                         age
@@ -27,6 +28,18 @@ export default {
                                 active
                             }
                         }`;
+        },
+        person:()=>{
+            return gql`
+                query person($id: ID!){
+                    person(id:$id){
+                        id
+                        name
+                        age
+                        active
+                    }
+                }
+            `;
         }
     }
 }

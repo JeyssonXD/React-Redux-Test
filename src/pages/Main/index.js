@@ -17,6 +17,7 @@ import Dashboard from '../Dashboard';
 //Person
 import Person from '../Person';
 import PersonNew from '../Person/new';
+import PersonEdit from '../Person/edit';
 
 const Main = ({
   mobileNavVisibility,
@@ -44,8 +45,9 @@ const Main = ({
           
           <Route /*Dashboard*/ location={location} exact path="/" component={Dashboard} />
 
-          <Route /*Person list*/  location={location} exact path="/person/index" component={Person} />
           <Route /*Person new*/   location={location} exact path="/person/new" component={PersonNew} />
+          <Route /*Person edit*/   location={location} exact path="/person/:id" component={PersonEdit} />
+          <Route /*Person list*/  location={location} exact path="/person" component={Person} />
 
           <Footer />
         </div>

@@ -9,5 +9,5 @@ export default {
   ThemeOptions,
   Layout,
   form: formReducer,
-  Person: Person
+  Person
 };

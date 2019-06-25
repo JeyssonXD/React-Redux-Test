@@ -1,5 +1,6 @@
 import React,{Component} from 'react';
 import PropTypes from 'prop-types';
+import {Link} from 'react-router-dom';
 //web components
 import { ListGroup,ListGroupItem,Glyphicon,Row,Col,DropdownButton,MenuItem } from 'react-bootstrap';
 
@@ -20,7 +21,7 @@ class profile extends Component {
                 <Col lg={4} xs={12}>
                         <div>
                                 <DropdownButton id="1" title="options">
-                                        <MenuItem eventKey="1" > <Glyphicon glyph="pencil" /> Edit</MenuItem>
+                                        <li role="presentation" ><Link to={"/person/"+person.id} ><Glyphicon glyph="pencil" /> Edit </Link></li>
                                         <MenuItem divider />
                                         <MenuItem eventKey="4"> <Glyphicon glyph="trash" /> Delete</MenuItem>
                                 </DropdownButton>
@@ -33,6 +34,7 @@ class profile extends Component {
 
 profile.propTypes = {
         person : PropTypes.shape({
+                id: PropTypes.string.isRequired,
                 name: PropTypes.string.isRequired,
                 age: PropTypes.number.isRequired,
                 active: PropTypes.bool.isRequired

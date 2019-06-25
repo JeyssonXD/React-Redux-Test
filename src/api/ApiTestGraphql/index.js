@@ -33,6 +33,16 @@ export default {
         }
     },
     person:{
+        fetch: async(id)=>{
+            try{
+                return await clientAuth.query({
+                    query: schemaPerson.query.person(),
+                    variables:{id:id}
+                });
+            }catch(err){
+                throw err;
+            }
+        },
         add: async(person)=>{
             try{
                 return await clientAuth.mutate({
@@ -40,7 +50,6 @@ export default {
                     variables:person
                 });
             }catch(error){
-                console.log(error);
                 throw error;
             }
         }

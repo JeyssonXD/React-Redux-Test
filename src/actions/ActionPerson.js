@@ -7,11 +7,15 @@ import {SET_PERSON,FETCH_PERSON,ADD_PERSON,UPDATE_PERSON,DELETE_PERSON} from '..
 //#region Person *********************/
 
 //#region SET PERSON
-export const setPerson = person =>{
+export const setPerson = persons =>{
   return {
     type: SET_PERSON,
-    person
+    persons
   }
+}
+
+export const actionSetPerson = persons =>{
+  return dispatch=>dispatch(setPerson(persons));
 }
 //#endregion
 
@@ -23,20 +27,18 @@ export const addPerson = person =>{
   }
 }
 
-export const actionAddPerson = async(data) =>{
-    return async dispatch=>{
-            try{
-              var resp = await api.person.add({person:data});
-              //code correctly created person
-              if(resp.code==='CODE1000'){
-                dispatch(addPerson(data.person));
-              }
-              return resp;
-            }catch(error){
-              throw error;
-            }
-          }
+export const actionAddPerson = person =>{
+    return async function action(dispatch){
+      try{
+        var res= await api.person.add(person)
+        dispatch(addPerson(person))
+        return res;
+      }catch(err){
+        throw err;
+      }
+    }
 }
+
 //#endregion
 
 //#region FETCH PERSON
@@ -46,6 +48,19 @@ export const fetchPerson = person =>{
     person
   }
 }
+
+export const actionFetchPerson = id =>{
+  return async function action(dispatch){
+    try{
+      var res = await api.person.fetch(id);
+      dispatch(fetchPerson(res.data.person));
+      return res;
+    }catch(err){
+      throw err;
+    }
+  }
+}
+
 //#endregion
 
 //#region UPDATE PERSON

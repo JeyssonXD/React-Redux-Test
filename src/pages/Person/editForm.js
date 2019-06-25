@@ -1,4 +1,4 @@
-import React,{Component} from "react";
+import React,{Component} from 'react';
 import {Form,FormGroup,ControlLabel,FormControl,HelpBlock,Button,Glyphicon,Alert} from 'react-bootstrap';
 import  '../../assets/styles/style.css';
 import SwitchControl from 'components/Switch';
@@ -9,59 +9,28 @@ import "../../assets/styles/style.css";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-class newForm extends Component{
+class editForm extends Component{
   
   state={
-    name:'',
-    age:'',
-    active:false,
+    id:this.props.person.id,
+    name:this.props.person.name,
+    age:this.props.person.age,
+    active:this.props.person.active,
     errors:{},
     loading:false,
     res:{}
   }
 
-  validate = data =>{
-    const errors = {};
-    if(!data.name) errors.name = "Can't be blank";
-    if(!data.age) errors.age = "Can't be blank";
-    if(data.age<0 || data.age>120) errors.age = "range invalid";
-    return errors;
-  }
-
-  handleChange = (e) =>{
-    if(!!this.state.errors[e.target.name]){
-      let errors = Object.assign({},this.state.errors);
-      delete errors[e.target.name];
+  componentWillReceiveProps= (nextProps) =>{
+    if(nextProps.person!=null){
       this.setState({
-        [e.target.name]:e.target.value,
-        errors
+        id:nextProps.person.id,
+        name:nextProps.person.name,
+        age:nextProps.person.age,
+        active:nextProps.person.active
       });
-    }else{
-      this.setState({[e.target.name]:e.target.value});
     }
   }
-
-  onSubmit = async(e) =>{
-    try{
-      e.preventDefault();
-      const errors = this.validate(this.state);
-      const {name,age,active} = this.state;
-      this.setState({errors});
-      if (Object.keys(errors).length === 0){
-          this.setState({loading:true});
-          var res = await this.props.addPerson(name,age,active);
-          const dataRes = {};
-          dataRes.code = res.data.createPerson.code;
-          dataRes.message = res.data.createPerson.message;
-          this.setState({loading:false,res:dataRes,name:'',age:''});
-      }
-    }catch(error){
-      const errors = {};
-      errors.request = "A problem has occurred, Network api injured"
-      this.setState({errors:errors,loading:false});
-      console.log(error);
-    }
-  };
 
   render(){
     const { name,age,active,errors,loading,res} = this.state;
@@ -69,7 +38,7 @@ class newForm extends Component{
       <div className="box-container">
       <Form onSubmit={this.onSubmit} >
         
-        <h3><Glyphicon glyph="user" /> Add person</h3>
+        <h3><Glyphicon glyph="user" /> Edit person</h3>
         
         <FormGroup controlId="name"  validationState={!!errors.name?"error":null}> 
           <ControlLabel>Name</ControlLabel>
@@ -119,11 +88,16 @@ class newForm extends Component{
       </div>
     )
   }
-  
+
 }
 
-newForm.propTypes = {
-  addPerson: PropTypes.func.isRequired
+editForm.propTypes = {
+  person : PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    name: PropTypes.string.isRequired,
+    age: PropTypes.number.isRequired,
+    active: PropTypes.bool.isRequired
+  })
 }
 
-export default newForm;
+export default editForm;
