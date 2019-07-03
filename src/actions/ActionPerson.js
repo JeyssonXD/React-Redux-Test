@@ -30,7 +30,7 @@ export const addPerson = person =>{
 export const actionAddPerson = person =>{
     return async function action(dispatch){
       try{
-        var res= await api.person.add(person)
+        var res = await api.person.add(person)
         dispatch(addPerson(person))
         return res;
       }catch(err){
@@ -68,6 +68,18 @@ export const updatePerson = person =>{
   return {
     type: UPDATE_PERSON,
     person
+  }
+}
+
+export const actionUpdatePerson = person=>{
+  return async function action(dispatch){
+    try{
+      var res = await api.person.edit(person);
+      dispatch(updatePerson(person));
+      return res;
+    }catch(err){
+      throw err;
+    }
   }
 }
 

@@ -52,6 +52,16 @@ export default {
             }catch(error){
                 throw error;
             }
+        },
+        edit: async(person)=>{
+            try{
+                return await clientAuth.mutate({
+                    mutation: schemaPerson.mutation.updatePerson(),
+                    variables:person
+                })
+            }catch(error){
+                throw error;
+            }
         }
     }
 }

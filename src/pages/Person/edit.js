@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import { actionFetchPerson } from '../../actions/ActionPerson';
+import { actionFetchPerson,actionUpdatePerson } from '../../actions/ActionPerson';
 import  EditForm  from './editForm';
+import {withRouter} from "react-router-dom";
 
 class edit extends Component{
 
@@ -19,6 +20,11 @@ class edit extends Component{
     }
   }
 
+  saveChange = async(id,name,age,active)=>{
+    console.log("execute");
+    return await this.props.actionUpdatePerson({person:{id,name,age,active}});
+  }
+
   render(){
     return(
       <div className="content">
@@ -27,7 +33,7 @@ class edit extends Component{
         </div>
         <div className="col-md-8">
           <div className="card">
-            <EditForm person={this.props.person}/>
+            <EditForm person={this.props.person} updatePerson={this.saveChange}/>
           </div>
         </div>
       </div>
@@ -45,4 +51,4 @@ const mapStateToProps = (state,props) =>{
   return {person:null};
 }
 
-export default connect(mapStateToProps,{actionFetchPerson})(edit);
+export default withRouter(connect(mapStateToProps,{actionFetchPerson,actionUpdatePerson})(edit));

@@ -1,7 +1,7 @@
 import React,{Component} from 'react';
 import {connect} from 'react-redux';
 import { Query } from 'react-apollo';
-import {Link} from 'react-router-dom';
+import {Link,withRouter} from 'react-router-dom';
 //style
 import "../../assets/styles/style.css";
 //schema
@@ -55,4 +55,4 @@ class PersonPage extends Component{
 }
 
 
-export default connect(null,{actionSetPerson})(PersonPage);
+export default withRouter(connect(null,{actionSetPerson})(PersonPage));

@@ -16,6 +16,22 @@ export default {
                     }
                 }
             }`
+       },
+       updatePerson: ()=>{
+           return gql`mutation editPerson($person: editPerson!){
+                editPerson(person:$person){
+                    code
+                    message
+                    success
+                    person{
+                        id
+                        name
+                        age
+                        active
+                    }
+                }
+            }
+           `;
        }
     },
     query:{

@@ -2,6 +2,7 @@ import React,{Component} from 'react';
 import {connect} from 'react-redux';
 import {actionAddPerson} from '../../actions/ActionPerson'; 
 import NewForm from './newForm';
+import {withRouter} from 'react-router-dom';
 
 class PersonNew extends Component{
 
@@ -32,4 +33,4 @@ class PersonNew extends Component{
   }
 }
 
-export default connect(null,{actionAddPerson})(PersonNew)
+export default withRouter(connect(null,{actionAddPerson})(PersonNew));

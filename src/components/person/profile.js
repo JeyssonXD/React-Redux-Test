@@ -21,7 +21,7 @@ class profile extends Component {
                 <Col lg={4} xs={12}>
                         <div>
                                 <DropdownButton id="1" title="options">
-                                        <li role="presentation" ><Link to={"/person/"+person.id} ><Glyphicon glyph="pencil" /> Edit </Link></li>
+                                        <li role="presentation" ><Link to={"/person/edit/"+person.id} ><Glyphicon glyph="pencil" /> Edit </Link></li>
                                         <MenuItem divider />
                                         <MenuItem eventKey="4"> <Glyphicon glyph="trash" /> Delete</MenuItem>
                                 </DropdownButton>
