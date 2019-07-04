@@ -21,7 +21,7 @@ class edit extends Component{
   }
 
   saveChange = async(id,name,age,active)=>{
-    console.log("execute");
+    age = Number(age);
     return await this.props.actionUpdatePerson({person:{id,name,age,active}});
   }
 
@@ -44,6 +44,7 @@ class edit extends Component{
 
 const mapStateToProps = (state,props) =>{
   if(props.match.params.id){
+    console.log(state);
     return {
       person: state.Person.find(x=>x.id===props.match.params.id)
     }

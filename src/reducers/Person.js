@@ -1,4 +1,4 @@
-import {ADD_PERSON,SET_PERSON,FETCH_PERSON} from '../types/personType';
+import {ADD_PERSON,SET_PERSON,FETCH_PERSON,UPDATE_PERSON} from '../types/personType';
 
 export default function reducer(state=[], action={}){
     switch(action.type){
@@ -22,6 +22,11 @@ export default function reducer(state=[], action={}){
               ...state,
               action.person
             ];
+        case UPDATE_PERSON:
+            return state.map(item=>{
+                if(item.id===action.person.id)return action.person;
+                return item;
+            });
         default: 
             return state;
     }

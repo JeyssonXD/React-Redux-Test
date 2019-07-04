@@ -6,6 +6,7 @@ import { ListGroup,ListGroupItem,Glyphicon,Row,Col,DropdownButton,MenuItem } fro
 
 class profile extends Component {
 
+        
 
         render(){
         const { person } = this.props;
@@ -23,7 +24,7 @@ class profile extends Component {
                                 <DropdownButton id="1" title="options">
                                         <li role="presentation" ><Link to={"/person/edit/"+person.id} ><Glyphicon glyph="pencil" /> Edit </Link></li>
                                         <MenuItem divider />
-                                        <MenuItem eventKey="4"> <Glyphicon glyph="trash" /> Delete</MenuItem>
+                                        <MenuItem eventKey="4" > <Glyphicon glyph="trash" /> Delete</MenuItem>
                                 </DropdownButton>
                         </div>
                 </Col>
