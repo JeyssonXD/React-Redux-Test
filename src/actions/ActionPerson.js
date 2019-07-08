@@ -92,6 +92,18 @@ export const deletePerson = id =>{
     id
   }
 }
+
+export const actionDeletePerson = person =>{
+  return async function action(dispatch){
+    try{
+      var res = await api.person.delete(person);
+      dispatch(deletePerson(person.person.id));
+      return res;
+    }catch(err){
+      throw err;
+    }
+  }
+}
 //#endregion
 
 //#endregion person*******************/

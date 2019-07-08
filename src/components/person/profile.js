@@ -1,12 +1,38 @@
 import React,{Component} from 'react';
 import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
+import {connect} from 'react-redux';
+//api
+import {actionDeletePerson} from '../../actions/ActionPerson';
 //web components
-import { ListGroup,ListGroupItem,Glyphicon,Row,Col,DropdownButton,MenuItem } from 'react-bootstrap';
+import { ListGroup,ListGroupItem,Glyphicon,Row,Col,DropdownButton,MenuItem,Modal,Button } from 'react-bootstrap';
 
 class profile extends Component {
 
-        
+        state={
+                showModalDelete:false
+        }
+
+        //#region Modal Delete
+        handleShowModalDelete=()=>{
+                this.setState({showModalDelete:true});
+        }
+        handleCloseModalDelete=()=>{
+                        //close modal
+                        this.setState({showModalDelete:false});
+        }
+        deletePerson = async() =>{
+                try{
+                        var person = {person:{ id : this.props.person.id}};
+                        await this.props.actionDeletePerson(person);
+                        //close modal
+                        this.setState({showModalDelete:false});
+                }catch(error){
+                        console.log(error);
+                        alert("error network to save changes");
+                }
+        }
+        //#endregion
 
         render(){
         const { person } = this.props;
@@ -21,13 +47,29 @@ class profile extends Component {
                 </Col>
                 <Col lg={4} xs={12}>
                         <div>
-                                <DropdownButton id="1" title="options">
+                                <DropdownButton id={person.id} title="options">
                                         <li role="presentation" ><Link to={"/person/edit/"+person.id} ><Glyphicon glyph="pencil" /> Edit </Link></li>
                                         <MenuItem divider />
-                                        <MenuItem eventKey="4" > <Glyphicon glyph="trash" /> Delete</MenuItem>
+                                        <MenuItem  onClick={this.handleShowModalDelete} > <Glyphicon glyph="trash" /> Delete</MenuItem>
                                 </DropdownButton>
                         </div>
                 </Col>
+ 
+                <Modal show={this.state.showModalDelete} onHide={this.handleCloseModalDelete}>
+                <Modal.Header closeButton>
+                <Modal.Title>Delete person</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>¿Are yoy sure of delete person with name {person.name}?</Modal.Body>
+                <Modal.Footer>
+                <Button  onClick={this.handleCloseModalDelete}>
+                Close
+                </Button>
+                <Button  onClick={this.deletePerson}>
+                yes, Delete
+                </Button>
+                </Modal.Footer>
+                </Modal>
+
         </Row>          
         );
         }
@@ -42,4 +84,4 @@ profile.propTypes = {
         }).isRequired
 }
 
-export default profile;
+export default connect(null,{actionDeletePerson})(profile);

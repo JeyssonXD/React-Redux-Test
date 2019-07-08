@@ -11,7 +11,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 class editForm extends Component{
 
-
   state={
     id:this.props.person?this.props.person.id:null,
     name:this.props.person?this.props.person.name:"",

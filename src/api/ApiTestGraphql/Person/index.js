@@ -32,6 +32,15 @@ export default {
                 }
             }
            `;
+       },
+       deletePerson: ()=>{
+           return gql`mutation deletePerson($person: deletePerson!){
+                deletePerson(person:$person){
+                code
+                message
+                success
+                }
+            }`;
        }
     },
     query:{

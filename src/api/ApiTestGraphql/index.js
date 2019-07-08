@@ -62,6 +62,16 @@ export default {
             }catch(error){
                 throw error;
             }
+        },
+        delete: async(person)=>{
+            try{
+                return await clientAuth.mutate({
+                    mutation: schemaPerson.mutation.deletePerson(),
+                    variables:person
+                });
+            }catch(error){
+                throw error;
+            }
         }
     }
 }

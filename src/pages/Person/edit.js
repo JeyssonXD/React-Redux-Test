@@ -44,7 +44,6 @@ class edit extends Component{
 
 const mapStateToProps = (state,props) =>{
   if(props.match.params.id){
-    console.log(state);
     return {
       person: state.Person.find(x=>x.id===props.match.params.id)
     }
