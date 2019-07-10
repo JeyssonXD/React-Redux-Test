@@ -13,7 +13,7 @@ class edit extends Component{
   componentDidMount= async()=>{
     try{
       if(this.props.match.params.id){
-        await this.props.actionFetchPerson(this.props.match.params.id);
+        await this.props.actionFetchPerson({view:{id:this.props.match.params.id}});
       }
     }catch(err){
       this.setState({errors:"problem network api"});

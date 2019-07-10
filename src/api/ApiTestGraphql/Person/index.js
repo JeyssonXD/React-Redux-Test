@@ -45,23 +45,33 @@ export default {
     },
     query:{
         persons:()=>{
-            return gql`query{
-                            people{
+            return gql`query persons($view: viewPerson){
+                        persons(view:$view){
+                            persons{
                                 id
                                 name
                                 age
                                 active
+                                order{
+                                observation
+                                }
+                            },
+                                count
+                                pageCurrent
+                                paginated
                             }
-                        }`;
+                }`;
         },
         person:()=>{
             return gql`
-                query person($id: ID!){
-                    person(id:$id){
-                        id
-                        name
-                        age
-                        active
+                query persons($view: viewPerson){
+                    persons(view:$view){
+                        persons{
+                            id
+                            name
+                            age
+                            active
+                        }
                     }
                 }
             `;

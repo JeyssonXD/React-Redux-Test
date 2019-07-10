@@ -33,11 +33,11 @@ export default {
         }
     },
     person:{
-        fetch: async(id)=>{
+        fetch: async(view)=>{
             try{
                 return await clientAuth.query({
                     query: schemaPerson.query.person(),
-                    variables:{id:id}
+                    variables:view
                 });
             }catch(err){
                 throw err;

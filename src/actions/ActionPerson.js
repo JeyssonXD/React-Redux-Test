@@ -49,11 +49,11 @@ export const fetchPerson = person =>{
   }
 }
 
-export const actionFetchPerson = id =>{
+export const actionFetchPerson = view =>{
   return async function action(dispatch){
     try{
-      var res = await api.person.fetch(id);
-      dispatch(fetchPerson(res.data.person));
+      var res = await api.person.fetch(view);
+      dispatch(fetchPerson(res.data.persons.persons[0]));
       return res;
     }catch(err){
       throw err;
