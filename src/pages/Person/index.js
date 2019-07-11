@@ -42,7 +42,10 @@ class PersonPage extends Component{
         this.setState({view:view});
     }
 
+
+
     onSearch = (e) =>{
+        //click on search
         const errors = this.validate(this.state);
         this.setState({errors});
         if (Object.keys(errors).length === 0){
@@ -50,11 +53,11 @@ class PersonPage extends Component{
                 var view = this.constructViewparams(this.state,1);
                 this.setState({view:view});
             });
-            
         }
     }
 
     validate = data =>{
+        //validation for search
         const errors = {};
         if(data.age){
             if(data.age<1 || data.age>120)errors.age = "range invalid";
@@ -69,7 +72,6 @@ class PersonPage extends Component{
         params['view'] = {pageCurrent:selected};
         if(name) params['view']={...params['view'],name};
         if(age){ var ageNumber=Number(age) ;params['view']={...params['view'],age:ageNumber};}
-        console.log(currentActive);
         if(currentActive) params['view']={...params['view'],active:active};
         return params;
     }
@@ -158,9 +160,9 @@ class PersonPage extends Component{
                         </Row>
                     </Form>
                 </section>
-                {/*Query for high order using apollo client*/}
-                <Query variables={view} box query={schemaPerson.query.persons()}  onCompleted={data=>{this.props.actionSetPerson(data.persons.persons);this.setState({count:data.persons.count});}}>
-                    {({ error,data,loading }) => {
+                {/*Query for high order using apollo client, fetch policy is not cache*/}
+                <Query variables={view}  query={schemaPerson.query.persons()} fetchPolicy="no-cache"  onCompleted={data=>{this.props.actionSetPerson(data.persons.persons);this.setState({count:data.persons.count});}}>
+                    {({ error,loading }) => {
 
                         if (loading){ return <div ><FontAwesomeIcon className="layer-center" icon={faSpinner} spin size="6x" /></div>}
 

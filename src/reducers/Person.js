@@ -18,9 +18,10 @@ export default function reducer(state=[], action={}){
                 ]
             }
         case ADD_PERSON:
+            console.log(action.person);
             return [
               ...state,
-              action.person.person
+              action.person
             ];
         case UPDATE_PERSON:
             return state.map(item=>{

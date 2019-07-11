@@ -31,7 +31,8 @@ export const actionAddPerson = person =>{
     return async function action(dispatch){
       try{
         var res = await api.person.add(person)
-        dispatch(addPerson(person))
+        if(res.data.createPerson.code==="CODE1000")
+          dispatch(addPerson(res.data.createPerson.person))
         return res;
       }catch(err){
         throw err;
