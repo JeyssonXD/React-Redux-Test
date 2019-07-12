@@ -33,16 +33,15 @@ class PersonPage extends Component{
         loading:false,
         pageCurrent:1,
         count:1,
-        currentActive:false
+        currentActive:false,
+        typeSortName:"ASC"
       }
 
     componentDidMount=()=>{
         //set null view exeption pageCurrent
-        var view = this.constructViewparams({},1);
+        var view = this.constructViewparams({typeSortName:"ASC"},1);
         this.setState({view:view});
     }
-
-
 
     onSearch = (e) =>{
         //click on search
@@ -68,8 +67,9 @@ class PersonPage extends Component{
     constructViewparams = (data,selected) =>{
         //contructor of view params for query
         const params = {};
-        const { name,age,active,currentActive} = data;
+        const { name,age,active,currentActive,typeSortName} = data;
         params['view'] = {pageCurrent:selected};
+        params['view'].sort =  {field:"name",type:typeSortName};
         if(name) params['view']={...params['view'],name};
         if(age){ var ageNumber=Number(age) ;params['view']={...params['view'],age:ageNumber};}
         if(currentActive) params['view']={...params['view'],active:active};
@@ -97,6 +97,22 @@ class PersonPage extends Component{
         this.setState({view:view});
     }
 
+    handleSorting = (e) =>{
+        var nextTypeSortName = this.nextSort(this.state.typeSortName);
+        this.setState({typeSortName:nextTypeSortName},()=>{
+            var view = this.constructViewparams(this.state,this.state.pageCurrent);
+            this.setState({view:view});
+        });
+    }
+
+    nextSort = (prevSort) =>{
+        if(prevSort==="ASC"){
+            return "DESC"
+        }else if(prevSort==="DESC"){
+            return "ASC";
+        }
+    }
+
     render(){
         const {persons} = this.props;
         const {name,age,active,errors,view,pageCurrent,count} = this.state;
@@ -112,7 +128,7 @@ class PersonPage extends Component{
                         <Row>
                             <Col lg={3} xs={12}>
                                 <FormGroup controlId="name"  > 
-                                <ControlLabel>Name</ControlLabel>
+                                <ControlLabel onClick={this.handleSorting} className="primary mouse-clicked"><Glyphicon className="color" glyph="sort-by-attributes-alt" />Name </ControlLabel>
                                 <FormControl 
                                     value={name}
                                     placeholder="name"
@@ -161,7 +177,7 @@ class PersonPage extends Component{
                     </Form>
                 </section>
                 {/*Query for high order using apollo client, fetch policy is not cache*/}
-                <Query variables={view}  query={schemaPerson.query.persons()} fetchPolicy="no-cache"  onCompleted={data=>{this.props.actionSetPerson(data.persons.persons);this.setState({count:data.persons.count});}}>
+                <Query variables={view}  query={schemaPerson.query.persons()} fetchPolicy="no-cache"  onCompleted={data=>{this.props.actionSetPerson(data.persons.persons);this.setState({pageCurrent:data.persons.pageCurrent,count:data.persons.count});}}>
                     {({ error,loading }) => {
 
                         if (loading){ return <div ><FontAwesomeIcon className="layer-center" icon={faSpinner} spin size="6x" /></div>}

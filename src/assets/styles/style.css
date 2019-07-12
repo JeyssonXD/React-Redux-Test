@@ -11,6 +11,9 @@
 }
 
 /**utilitys***/
+.mouse-clicked{
+    cursor: pointer;
+}
 .box-title{
     padding: 5px;
     border-style: solid 1px;

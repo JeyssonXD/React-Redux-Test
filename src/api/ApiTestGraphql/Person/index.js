@@ -61,20 +61,6 @@ export default {
                                 paginated
                             }
                 }`;
-        },
-        person:()=>{
-            return gql`
-                query persons($view: viewPerson){
-                    persons(view:$view){
-                        persons{
-                            id
-                            name
-                            age
-                            active
-                        }
-                    }
-                }
-            `;
         }
     }
 }
