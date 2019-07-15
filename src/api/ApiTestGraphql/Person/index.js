@@ -62,5 +62,22 @@ export default {
                             }
                 }`;
         }
+    },
+    subscription:{
+        createPerson:()=>{
+            return gql`
+            subscription {
+                createPerson{
+                    success
+                    person{
+                        id
+                        name
+                        age
+                        active
+                    }
+                }
+            }
+            `;
+        }
     }
 }

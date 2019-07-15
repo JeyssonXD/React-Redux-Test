@@ -18,7 +18,6 @@ export default function reducer(state=[], action={}){
                 ]
             }
         case ADD_PERSON:
-            console.log(action.person);
             return [
               ...state,
               action.person

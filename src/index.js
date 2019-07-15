@@ -12,7 +12,14 @@ import api from './api/ApiTestGraphql';
 import valid from './api/ApiTestGraphql/helper/validate';
 import config from './api/ApiTestGraphql/helper/config';
 //config apollo client and provider
-import  ApolloClient  from 'apollo-boost';
+//import  ApolloClient  from 'apollo-boost';
+import { ApolloClient } from 'apollo-client';
+import { createHttpLink } from 'apollo-link-http';
+import { setContext } from 'apollo-link-context';
+import { InMemoryCache } from 'apollo-cache-inmemory';
+import { split } from 'apollo-link';
+import { getMainDefinition } from 'apollo-utilities';
+import { WebSocketLink } from 'apollo-link-ws';
 import  {ApolloProvider}  from 'react-apollo';
 
 
@@ -25,40 +32,58 @@ api.oAuth.sign({credentials:{email:config.developer.UserName,password:config.dev
   }else{
     alert("not authenticated api");
     localStorage.removeItem("ApiTestGraphql");
-
   }
 }).catch((error)=>{console.log(error)});
 
-//config apollo client authorizatio
-const client = new ApolloClient({
+//Create an http link
+const httpLink = createHttpLink({
   uri: config.developer.URL,
-  request: operation => {
-    operation.setContext({
-      headers: {
-        authorization: localStorage.getItem('ApiTestGraphql')
+});
+
+//Create a WebSocket link
+const wsLink = new WebSocketLink({
+  uri: config.developer.WS,
+  options: {
+    reconnect: true,
+    lazy:true,
+    connectionParams: async () => {
+      return {
+          authorization: localStorage.getItem('ApiTestGraphql')
       }
-    });
-   },
-   onError: ({ networkError, graphQLErrors }) => { 
-    if(graphQLErrors){
-      for (let err of graphQLErrors) {
-        switch(err.extensions.code){
-          case 'UNAUTHENTICATED':
-            //reload tokens
-          break;
-          case 'GRAPHQL_VALIDATION_FAILED':
-            //query or mutation invalid  
-          break;
-          default:
-            //GRAPHQL_VALIDATION_FAILED
-          break;
-        }
-      }
-     }
-    //console.log('graphQLErrors', graphQLErrors)
-    //console.log('networkError', networkError)
+    },
   }
 });
+
+const authLink = setContext((_, { headers }) => {
+  const token = localStorage.getItem('ApiTestGraphql')
+  // return the headers to the context so httpLink can read them
+  return {
+    headers: {
+      ...headers,
+      authorization: token ,
+    }
+  }
+});
+
+const link = split(
+  // split based on operation type
+  ({ query }) => {
+    const definition = getMainDefinition(query);
+    return (
+      definition.kind === 'OperationDefinition' &&
+      definition.operation === 'subscription'
+    );
+  },
+  wsLink,
+  httpLink,
+);
+
+//setup client
+const client = new ApolloClient({
+  link: authLink.concat(link),
+  cache: new InMemoryCache()
+});
+
 
 
 //store

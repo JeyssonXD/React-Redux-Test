@@ -42,12 +42,10 @@ const Main = ({
 
         <div className="main-panel">
           <Header />
-
           
           <Route /*Person list*/  location={location}  path="/persons/" component={Person} />
           <Route /*Person edit*/  location={location}  path="/person/edit/:id" component={PersonEdit} />
           <Route /*Person new*/   location={location}  path="/person/new" component={PersonNew} />
-          
           
           <Route /*Dashboard*/ location={location} exact path="/" component={Dashboard} />
 

@@ -36,6 +36,11 @@
     color: white!important;
 }
 
+.primary{
+    color: #6D71EF!important;
+    border-color: #6D71EF!important;
+}
+
 /*background-color*/
 .color-back-grey-low{
     background-color: #eeeeee;
@@ -49,8 +54,42 @@
     background-color: #6D71EF!important;
 }
 
-.primary{
-    color: #6D71EF!important;
-    border-color: #6D71EF!important;
+
+
+/*animations*/
+.itemBell {
+    display: inline-block;
+    font-size: 50vmin;
+    animation: 1s bell-vibrate ease-in-out infinite;
+}
+
+@keyframes bell-vibrate {
+    0% {
+        transform: rotate(0);
+    }
+
+    4% {
+        transform: rotate(8deg);
+    }
+
+    8% {
+        transform: rotate(-8deg);
+    }
+
+    12% {
+        transform: rotate(8deg);
+    }
+
+    16% {
+        transform: rotate(-8deg);
+    }
+
+    20% {
+        transform: rotate(0);
+    }
+
+    100% {
+        transform: rotate(0);
+    }
 }
 
