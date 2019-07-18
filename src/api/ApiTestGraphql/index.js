@@ -27,7 +27,6 @@ export default {
                     variables:credentials
                 });
             }catch(error){
-                console.log(error);
                 throw error;
             }
         }
@@ -36,10 +35,11 @@ export default {
         fetch: async(view)=>{
             try{
                 return await clientAuth.query({
-                    query: schemaPerson.query.person(),
+                    query: schemaPerson.query.persons(),
                     variables:view
                 });
             }catch(err){
+                console.log(err);
                 throw err;
             }
         },

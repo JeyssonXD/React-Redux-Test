@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import { actionFetchPerson,actionUpdatePerson } from '../../actions/ActionPerson';
+import { actionDeleteNotification } from '../../actions/actionNotification';
 import  EditForm  from './editForm';
 import {withRouter} from "react-router-dom";
 
@@ -14,10 +15,16 @@ class edit extends Component{
     try{
       if(this.props.match.params.id){
         await this.props.actionFetchPerson({view:{id:this.props.match.params.id}});
+        //delete notification
+        this.props.actionDeleteNotification(`personNotification${this.props.match.params.id}`);
       }
     }catch(err){
       this.setState({errors:"problem network api"});
     }
+  }
+
+  componentWillMount(){
+    console.log("willmount")
   }
 
   saveChange = async(id,name,age,active)=>{
@@ -51,4 +58,4 @@ const mapStateToProps = (state,props) =>{
   return {person:null};
 }
 
-export default withRouter(connect(mapStateToProps,{actionFetchPerson,actionUpdatePerson})(edit));
+export default withRouter(connect(mapStateToProps,{actionFetchPerson,actionUpdatePerson,actionDeleteNotification})(edit));

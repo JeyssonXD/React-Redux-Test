@@ -53,6 +53,7 @@ export const fetchPerson = person =>{
 export const actionFetchPerson = view =>{
   return async function action(dispatch){
     try{
+      console.log("ejecuto");
       var res = await api.person.fetch(view);
       dispatch(fetchPerson(res.data.persons.persons[0]));
       return res;

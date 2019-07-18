@@ -19,9 +19,6 @@ import "../../assets/styles/style.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 
-
-
-
 class PersonPage extends Component{
 
     state={

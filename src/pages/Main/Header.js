@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { toggleMobileNavVisibility } from '../../reducers/Layout';
 import { actionAddNotification} from '../../actions/actionNotification';
-import { Navbar, Nav, NavItem, NavDropdown, MenuItem, FormGroup, FormControl,Alert } from 'react-bootstrap';
-
+import { Navbar, Nav, NavItem, NavDropdown, MenuItem, FormGroup, FormControl,Alert,Glyphicon } from 'react-bootstrap';
+import Notifications from '../../components/Navbar/Notifications';
 //api definition
 import api from '../../api/ApiTestGraphql/Person/index';
 //apollo
@@ -15,13 +15,12 @@ require('../../../src/assets/styles/style.css');
 
 class Header extends Component{
 
-  state={
-    alerted:false
+  addNotificationProps = ({createPerson:{person}}) =>{
+    return {id:"personNotification"+person.id,text:"New Person: "+person.name,link:"/person/edit/"+person.id};
   }
 
-  render(){
 
-    const { alerted } = this.state;
+  render(){
 
     return(
       <Navbar fluid={true}>
@@ -40,20 +39,29 @@ class Header extends Component{
           <NavDropdown title={<i className="fa fa-file-download" />} id="basic-nav-dropdown">
             <MenuItem>Export at Excel</MenuItem>
           </NavDropdown>
-          <NavDropdown title={<i className={alerted?"fa fa-bell itemBell primary" :"fa fa-bell"} />} id="basic-nav-dropdown">
+         
           {/**notification susbcription new person add*/}
-          <Subscription  subscription={api.subscription.createPerson()}>
+          <Subscription  subscription={api.subscription.createPerson()} >
           {({ error,loading,data }) => {
 
-            if (loading){ return <MenuItem >No hay notificaciones</MenuItem>}
+          if (loading){ 
+            if(this.props.notifications!=null && this.props.notifications.length>0){ 
+              console.log(this.props.notifications);
+              return <NavDropdown  title={<i className={"fa fa-bell itemBell color-yellow" } />} id="basic-nav-dropdown">
+                    {this.state.notifications.map((item)=>{
+                      return <MenuItem key={item.id} componentClass={Link} href={item.link} to={item.link}><Glyphicon glyph="exclamation-sign" />{item.text}</MenuItem>
+                    })}
+                    </NavDropdown>}  
+            else{ 
+              return  <NavDropdown  title={<i className="fa fa-bell" />} id="basic-nav-dropdown"><MenuItem >Not have notifications</MenuItem></NavDropdown>
+            }
+          }
             if (error){ return <div><Alert bsStyle="danger"><strong>went wrong sorry!</strong> can promblems network configuration, contact with administrator</Alert></div> }
             
-            this.props.actionAddNotification({notification:{text:"New Person"+data.createPerson.person.name,link:"/person/edit/"+data.createPerson.person.id}});
-            return  <MenuItem  componentClass={Link}  to={"/person/edit/"+data.createPerson.person.id}> </MenuItem>
-
+              let notification = this.addNotificationProps(data);
+              return <Notifications notification={notification}/>
           }}
           </Subscription>
-          </NavDropdown>
         </Nav>
         <div className="separator"></div>
         <Navbar.Form pullLeft>
@@ -75,8 +83,8 @@ class Header extends Component{
 }
 
 const mapStateToProps = (state) => {
-  if(state.notification!=null){
-    return { notifications: state.notification}
+  if(state.Notification!=null){
+    return { notifications: state.Notification}
   }
   return { notifications:null};
 }
