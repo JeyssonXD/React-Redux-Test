@@ -64,6 +64,14 @@ class Nav extends Component {
   }
 
   isPathActive(path) {
+    //version internet explorer
+    // if (!String.prototype.startsWith) {
+    //   String.prototype.startsWith = function(path, position) {
+    //     position = position || 0;
+    //     return this.indexOf(path, position) === position;
+    //   };
+    // }
+    //version Chrome
     return this.props.location.pathname.startsWith(path);
   }
 }

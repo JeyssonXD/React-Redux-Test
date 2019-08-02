@@ -2,6 +2,7 @@ import ApolloClient from 'apollo-boost';
 //definition
 import schemaAuth from './Authorization';
 import schemaPerson from './Person';
+import schemaNotification from './Notification';
 //config
 import config  from './helper/config';
 
@@ -39,7 +40,6 @@ export default {
                     variables:view
                 });
             }catch(err){
-                console.log(err);
                 throw err;
             }
         },
@@ -68,6 +68,18 @@ export default {
                 return await clientAuth.mutate({
                     mutation: schemaPerson.mutation.deletePerson(),
                     variables:person
+                });
+            }catch(error){
+                throw error;
+            }
+        }
+    },
+    notification:{
+        disabled: async(id)=>{
+            try{
+                return await clientAuth.mutate({
+                    mutation: schemaNotification.mutation.disableNotification(),
+                    variables: {id}
                 });
             }catch(error){
                 throw error;

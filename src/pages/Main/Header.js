@@ -2,25 +2,38 @@ import React,{Component} from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { toggleMobileNavVisibility } from '../../reducers/Layout';
-import { actionAddNotification} from '../../actions/actionNotification';
-import { Navbar, Nav, NavItem, NavDropdown, MenuItem, FormGroup, FormControl,Alert,Glyphicon } from 'react-bootstrap';
+import { Navbar, Nav, NavItem, NavDropdown, MenuItem, FormGroup, FormControl,Alert } from 'react-bootstrap';
 import Notifications from '../../components/Navbar/Notifications';
 //api definition
-import api from '../../api/ApiTestGraphql/Person/index';
+import schemaNotification from '../../api/ApiTestGraphql/Notification/index';
 //apollo
-import {Subscription} from 'react-apollo';
+import {Query} from 'react-apollo';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 //style
 require('../../../src/assets/styles/style.css');
 
+
 class Header extends Component{
+
+  state = {
+    alerted : false
+  }
 
   addNotificationProps = ({createPerson:{person}}) =>{
     return {id:"personNotification"+person.id,text:"New Person: "+person.name,link:"/person/edit/"+person.id};
   }
 
+  alerted = ({notifications}) =>{
+    if(notifications.length>0){
+      this.setState({alerted:true})
+    }
+  }
 
   render(){
+
+    const { alerted } = this.state;
 
     return(
       <Navbar fluid={true}>
@@ -40,28 +53,39 @@ class Header extends Component{
             <MenuItem>Export at Excel</MenuItem>
           </NavDropdown>
          
-          {/**notification susbcription new person add*/}
-          <Subscription  subscription={api.subscription.createPerson()} >
-          {({ error,loading,data }) => {
+          {/**notification */}
+          <NavDropdown  title={<i className={ alerted?"fa fa-bell itemBell color-yellow  ":"fa fa-bell" } />} id="basic-nav-dropdown">
+            <Query query={schemaNotification.query.notifications()} fetchPolicy="network-only" onCompleted={data=>{this.alerted(data)}} >
+            {({ error,loading,data,subscribeToMore }) => {
+              
+              if (loading){ return <div ><FontAwesomeIcon className="layer-center" icon={faSpinner} spin />loading</div>}
 
-          if (loading){ 
-            if(this.props.notifications!=null && this.props.notifications.length>0){ 
-              console.log(this.props.notifications);
-              return <NavDropdown  title={<i className={"fa fa-bell itemBell color-yellow" } />} id="basic-nav-dropdown">
-                    {this.state.notifications.map((item)=>{
-                      return <MenuItem key={item.id} componentClass={Link} href={item.link} to={item.link}><Glyphicon glyph="exclamation-sign" />{item.text}</MenuItem>
-                    })}
-                    </NavDropdown>}  
-            else{ 
-              return  <NavDropdown  title={<i className="fa fa-bell" />} id="basic-nav-dropdown"><MenuItem >Not have notifications</MenuItem></NavDropdown>
-            }
-          }
-            if (error){ return <div><Alert bsStyle="danger"><strong>went wrong sorry!</strong> can promblems network configuration, contact with administrator</Alert></div> }
-            
-              let notification = this.addNotificationProps(data);
-              return <Notifications notification={notification}/>
-          }}
-          </Subscription>
+              if (error){console.log(error); return <div><Alert bsStyle="danger"><strong>went wrong sorry!</strong> can promblems network configuration, contact with administrator</Alert></div> }
+              
+              if(data==null && data.notifications==null){
+                return (
+                  <MenuItem>Not have notifications</MenuItem>);
+              }else{
+                return (
+                    <Notifications   notifications={data.notifications} subscribeToNewNotification={()=>subscribeToMore({
+                      document: schemaNotification.subscription.notification(),
+                      updateQuery: (prev,{subscriptionData })=>{
+                        if(!subscriptionData.data) return prev;
+                        const newFeedNotification = subscriptionData.data.notification;
+                        var notifications = {
+                          notifications : [
+                            ...prev.notifications,
+                            {...newFeedNotification}
+                          ],
+                        };
+                        return notifications;
+                      }
+                    })} />
+                  );
+              }
+            }}
+            </Query>
+          </NavDropdown>
         </Nav>
         <div className="separator"></div>
         <Navbar.Form pullLeft>
@@ -89,4 +113,4 @@ const mapStateToProps = (state) => {
   return { notifications:null};
 }
 
-export default connect(mapStateToProps,{toggleMobileNavVisibility,actionAddNotification})(Header);
+export default connect(mapStateToProps,{toggleMobileNavVisibility})(Header);

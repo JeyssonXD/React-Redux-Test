@@ -1,61 +1,42 @@
 import React,{Component} from 'react';
 import PropTypes from 'prop-types';
-import {MenuItem,NavDropdown,Glyphicon} from 'react-bootstrap';
+import {MenuItem,Glyphicon} from 'react-bootstrap';
 import {Link} from 'react-router-dom';
-import {connect} from 'react-redux';
-import {actionAddNotification} from '../../actions/actionNotification';
+
 //style
 require('../../../src/assets/styles/style.css');
 
 
 class Notifications extends Component{
 
-  state = {
-    notifications : []
-  }
-
-  componentWillReceiveProps=(nextProps)=>{
-    if(nextProps.notifications!=null){
-      this.setState({notifications:nextProps.notifications})
-    }
-  }
 
   componentDidMount(){
-    //first Time
-    //add new notification
-    this.props.actionAddNotification(this.props.notification);
+    this.props.subscribeToNewNotification();
   }
 
-  componentDidUpdate(){
-    //add new notification
-    this.props.actionAddNotification(this.props.notification);
-  }
 
   render(){
-    let { notifications } = this.state;
+    const {notifications} = this.props;
     return (
-        <NavDropdown  title={<i className={"fa fa-bell itemBell color-yellow" } />} id="basic-nav-dropdown">
-          {!!notifications && notifications.map((item)=>{
-            return <MenuItem key={item.id} componentClass={Link} href={item.link} to={item.link}><Glyphicon glyph="exclamation-sign" />{item.text}</MenuItem>
+        <div className="box-container navDropDown-large">
+          {!!notifications && notifications.map((item,index)=>{
+              if(notifications.length-index<5)
+                return <div key={item.id} ><MenuItem  componentClass={Link} href={item.link} to={item.link}><Glyphicon glyph="exclamation-sign" /> {item.text}</MenuItem><hr/></div>
+              return null;
           })}
-        </NavDropdown>
+         <div key={-1}><MenuItem   componentClass={Link} href="/notifications" to="/notifications"><Glyphicon glyph="th-list" /> show All notifications</MenuItem></div>
+        </div>
     );
   }
 }
 
 Notifications.propsTypes = {
-  notification: PropTypes.shape({
+  notifications: PropTypes.shape({
     id: PropTypes.string.isRequired,
     text: PropTypes.string.isRequired,
     link: PropTypes.string.isRequired
-  })
+  }),
+  subscribeToNewNotification: PropTypes.func.isRequired
 }
 
-const mapStateToProps = (state) =>{
-  if(!state.Notification!=null){
-    return { notifications : state.Notification}
-  }
-  return {notifications :null}
-}
-
-export default  connect(mapStateToProps,{actionAddNotification})(Notifications);
+export default  Notifications;

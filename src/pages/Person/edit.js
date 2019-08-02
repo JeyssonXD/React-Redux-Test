@@ -16,16 +16,14 @@ class edit extends Component{
       if(this.props.match.params.id){
         await this.props.actionFetchPerson({view:{id:this.props.match.params.id}});
         //delete notification
-        this.props.actionDeleteNotification(`personNotification${this.props.match.params.id}`);
+        //this.props.actionDeleteNotification(`personNotification${this.props.match.params.id}`);
       }
     }catch(err){
       this.setState({errors:"problem network api"});
     }
   }
 
-  componentWillMount(){
-    console.log("willmount")
-  }
+
 
   saveChange = async(id,name,age,active)=>{
     age = Number(age);

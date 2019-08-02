@@ -28,6 +28,10 @@
   padding: 10px;
 }
 
+.navDropDown-large{
+    width: 300px!important;
+}
+
 /*colors*/
 .color-black{
     color: black;
