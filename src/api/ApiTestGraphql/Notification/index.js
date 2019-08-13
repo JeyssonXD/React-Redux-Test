@@ -10,6 +10,7 @@ export default {
             text
             link
             enable
+            fecha
           }
         }
       `;
@@ -18,15 +19,18 @@ export default {
   mutation:{
     disableNotification: ()=>{
       return gql`
-        query notification($id: id!){
-          notification(id: $id){
+        mutation disabledNotification($filter: disableNotification!){
+          disabledNotification(filter: $filter){
             code
             message
             success
+            notification{
+              id
+            }
           }
         }
       `;
-    } 
+    }
   },
   subscription:{
     notification:()=>{
@@ -37,6 +41,7 @@ export default {
                 text
                 link
                 enable
+                fecha
             }
         }
         `;

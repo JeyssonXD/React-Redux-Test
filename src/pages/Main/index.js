@@ -19,6 +19,9 @@ import Person from '../Person';
 import PersonNew from '../Person/new';
 import PersonEdit from '../Person/edit';
 
+//Notifications
+import Notifications from '../Notifications/index.js';
+
 const Main = ({
   mobileNavVisibility,
   hideMobileMenu,
@@ -46,6 +49,8 @@ const Main = ({
           <Route /*Person list*/  location={location}  path="/persons/" component={Person} />
           <Route /*Person edit*/  location={location}  path="/person/edit/:id" component={PersonEdit} />
           <Route /*Person new*/   location={location}  path="/person/new" component={PersonNew} />
+
+          <Route /*All notification*/ location={location} path="/notifications" component={Notifications}/>
           
           <Route /*Dashboard*/ location={location} exact path="/" component={Dashboard} />
 

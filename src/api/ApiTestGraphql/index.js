@@ -75,11 +75,11 @@ export default {
         }
     },
     notification:{
-        disabled: async(id)=>{
+        disabled: async(filter)=>{
             try{
                 return await clientAuth.mutate({
                     mutation: schemaNotification.mutation.disableNotification(),
-                    variables: {id}
+                    variables: filter
                 });
             }catch(error){
                 throw error;

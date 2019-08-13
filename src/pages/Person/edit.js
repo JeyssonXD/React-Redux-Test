@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import { actionFetchPerson,actionUpdatePerson } from '../../actions/ActionPerson';
-import { actionDeleteNotification } from '../../actions/actionNotification';
+import { actionDisabledNotification } from '../../actions/actionNotification';
 import  EditForm  from './editForm';
 import {withRouter} from "react-router-dom";
 
@@ -16,7 +16,8 @@ class edit extends Component{
       if(this.props.match.params.id){
         await this.props.actionFetchPerson({view:{id:this.props.match.params.id}});
         //delete notification
-        //this.props.actionDeleteNotification(`personNotification${this.props.match.params.id}`);
+        var idInteger = parseInt(this.props.match.params.id,10);
+        this.props.actionDisabledNotification({filter:{id:idInteger,type:'person'}});
       }
     }catch(err){
       this.setState({errors:"problem network api"});
@@ -56,4 +57,4 @@ const mapStateToProps = (state,props) =>{
   return {person:null};
 }
 
-export default withRouter(connect(mapStateToProps,{actionFetchPerson,actionUpdatePerson,actionDeleteNotification})(edit));
+export default withRouter(connect(mapStateToProps,{actionFetchPerson,actionUpdatePerson,actionDisabledNotification})(edit));

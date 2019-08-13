@@ -9,6 +9,7 @@ import schemaNotification from '../../api/ApiTestGraphql/Notification/index';
 //apollo
 import {Query} from 'react-apollo';
 
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 //style
@@ -25,9 +26,18 @@ class Header extends Component{
     return {id:"personNotification"+person.id,text:"New Person: "+person.name,link:"/person/edit/"+person.id};
   }
 
-  alerted = ({notifications}) =>{
-    if(notifications.length>0){
+  alerted = (notifications) =>{
+    if(notifications.length>0 ){
       this.setState({alerted:true})
+    }else{
+      this.setState({alerted:false})
+    }
+  }
+
+  //change icon notified
+  componentWillReceiveProps(nextProps){
+    if(this.props.notificationStore!==nextProps.notificationStore){
+      this.alerted(nextProps.notificationStore);
     }
   }
 
@@ -55,34 +65,41 @@ class Header extends Component{
          
           {/**notification */}
           <NavDropdown  title={<i className={ alerted?"fa fa-bell itemBell color-yellow  ":"fa fa-bell" } />} id="basic-nav-dropdown">
-            <Query query={schemaNotification.query.notifications()} fetchPolicy="network-only" onCompleted={data=>{this.alerted(data)}} >
+            <Query query={schemaNotification.query.notifications()} fetchPolicy="network-only" onCompleted={data=>{ this.alerted(data.notifications); }} >
             {({ error,loading,data,subscribeToMore }) => {
               
               if (loading){ return <div ><FontAwesomeIcon className="layer-center" icon={faSpinner} spin />loading</div>}
 
               if (error){console.log(error); return <div><Alert bsStyle="danger"><strong>went wrong sorry!</strong> can promblems network configuration, contact with administrator</Alert></div> }
               
-              if(data==null && data.notifications==null){
-                return (
-                  <MenuItem>Not have notifications</MenuItem>);
-              }else{
-                return (
-                    <Notifications   notifications={data.notifications} subscribeToNewNotification={()=>subscribeToMore({
-                      document: schemaNotification.subscription.notification(),
-                      updateQuery: (prev,{subscriptionData })=>{
-                        if(!subscriptionData.data) return prev;
-                        const newFeedNotification = subscriptionData.data.notification;
-                        var notifications = {
-                          notifications : [
-                            ...prev.notifications,
-                            {...newFeedNotification}
-                          ],
-                        };
-                        return notifications;
-                      }
-                    })} />
-                  );
-              }
+              //finally
+              return (
+                  <Notifications   notifications={data.notifications} subscribeToNewNotification={()=>subscribeToMore({
+                    document: schemaNotification.subscription.notification(),
+                    updateQuery: (prev,{subscriptionData })=>{
+                      if(!subscriptionData.data) return prev;
+                      const newFeedNotification = subscriptionData.data.notification;
+                      
+                      //version proptypes
+                      // var notifications = {
+                      //   notifications : [
+                      //     ...prev.notifications,
+                      //     {...newFeedNotification}
+                      //   ],
+                      // };
+
+                      //version redux
+                      var notifications = {
+                        notifications : [
+                          ...this.props.notificationStore,
+                          {...newFeedNotification}
+                        ],
+                      };
+                      return notifications;
+                    }
+                  })} />
+                );
+              
             }}
             </Query>
           </NavDropdown>
@@ -108,9 +125,9 @@ class Header extends Component{
 
 const mapStateToProps = (state) => {
   if(state.Notification!=null){
-    return { notifications: state.Notification}
+    return { notificationStore: state.Notification}
   }
-  return { notifications:null};
+  return { notificationStore:null};
 }
 
 export default connect(mapStateToProps,{toggleMobileNavVisibility})(Header);

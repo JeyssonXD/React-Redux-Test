@@ -2,8 +2,6 @@ import React,{Component} from 'react';
 import {connect} from 'react-redux';
 import { Query } from 'react-apollo';
 import {Link,withRouter} from 'react-router-dom';
-//style
-import "../../assets/styles/style.css";
 //schema
 import schemaPerson from '../../api/ApiTestGraphql/Person';
 //actions
