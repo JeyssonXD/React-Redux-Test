@@ -2,6 +2,7 @@ import React,{Component} from 'react';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 import {Glyphicon,ListGroup} from 'react-bootstrap';
+import moment from 'moment';
 
 class Notifications extends Component{
 
@@ -20,7 +21,8 @@ class Notifications extends Component{
               <section className="panel box-container">
                 <ListGroup variant="flush">
                 {!!notificationStore && notificationStore.map((item,index)=>{
-                  return <Link className="list-group-item" key={item.id} to={item.link} href={item.link}><Glyphicon glyph="exclamation-sign" /> {item.text} <span>{(new Date())- item.fecha} age</span></Link>
+                  var past = moment(item.fecha);
+                  return <Link className="list-group-item" key={item.id} to={item.link} href={item.link}><Glyphicon glyph="exclamation-sign" /> {item.text}  <span><blockquote>{moment(item.fecha).fromNow()}</blockquote></span></Link>
                 })}
                 </ListGroup>
               </section>
